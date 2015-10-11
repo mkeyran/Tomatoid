@@ -17,10 +17,10 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
- import QtQuick 1.1
- import org.kde.plasma.core 0.1 as PlasmaCore
+ import QtQuick 2.0
+ import org.kde.plasma.core 2.0 as PlasmaCore
 
- import "plasmapackage:/code/logic.js" as Logic
+ import "../code/logic.js" as Logic
 
  Item {
 	id: compactItem
@@ -55,11 +55,12 @@
 		property int minimumHeight
 		onClicked: plasmoid.togglePopup()
 
-		PlasmaCore.Theme { id: theme }
+		//PlasmaCore.Theme { id: theme }
 
 		PlasmaCore.Svg {
 			id: svgIcon
-			imagePath: plasmoid.file("images", "tomatoid.svgz")
+			//imagePath: plasmoid.file("images", "tomatoid.svgz")
+			imagePath: "../images/tomatoid.svgz"
 		}
 
 		PlasmaCore.SvgItem {
@@ -91,7 +92,7 @@
 				width: Math.max(parent.size*4/9, 35)
 				height: width/2
 				anchors.centerIn: parent
-				color: theme.backgroundColor
+				color: PlasmaCore.Theme.backgroundColor
 				border.color: "grey"
 				border.width: 2
 				radius: 4
@@ -103,7 +104,7 @@
 			Text {
 				id: overlayText
 				text: timeString
-				color: theme.textColor
+				color: PlasmaCore.Theme.textColor
 				font.pixelSize: Math.max(timerContainer.size/8, 11)
 				anchors.centerIn: labelRect
 				opacity: labelRect.opacity > 0 ? 1 : 0

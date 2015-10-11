@@ -17,12 +17,12 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-import QtQuick 1.1
-import QtMultimediaKit 1.1
-import org.kde.plasma.core 0.1 as PlasmaCore
-import org.kde.plasma.components 0.1 as PlasmaComponents
+import QtQuick 2.0
+import QtMultimedia 5.4
+import org.kde.plasma.core 2.0 as PlasmaCore
+import org.kde.plasma.components 2.0 as PlasmaComponents
 
-import "plasmapackage:/code/logic.js" as Logic
+import "../code/logic.js" as Logic
 
 Item {
 	id: tomatoid
@@ -38,6 +38,7 @@ Item {
 	property bool playTickingSound: false
 	property bool playTickingSoundOnBreaks: false
 	property bool continuousMode: false
+        property bool completeContinuousMode: false
 	property bool inPomodoro: false
 	property bool inBreak: false
 	property bool timerActive: inPomodoro || inBreak
@@ -46,9 +47,9 @@ Item {
 	property bool kdeNotification: false
 	property bool noNotification: false
 
-	property int pomodoroLenght: 25
-	property int shortBreakLenght: 5
-	property int longBreakLenght: 20
+	property int pomodoroLength: 25
+	property int shortBreakLength: 5
+	property int longBreakLength: 20
 	property int pomodorosPerLongBreak: 4
 
 	property string actionStartTimer
@@ -85,9 +86,10 @@ Item {
 		playTickingSound 		= plasmoid.readConfig("playTickingSound");
                 playTickingSoundOnBreaks        = plasmoid.readConfig("playTickingSoundOnBreaks");
 		continuousMode 			= plasmoid.readConfig("continuousMode");
-		pomodoroLenght 			= plasmoid.readConfig("pomodoroLenght");
-		shortBreakLenght 		= plasmoid.readConfig("shortBreakLenght");
-		longBreakLenght 		= plasmoid.readConfig("longBreakLenght");
+                completeContinuousMode          = plasmoid.readConfig("completeContinuousMode");
+		pomodoroLength 			= plasmoid.readConfig("pomodoroLength");
+		shortBreakLength 		= plasmoid.readConfig("shortBreakLength");
+		longBreakLength 		= plasmoid.readConfig("longBreakLength");
 		pomodorosPerLongBreak 	        = plasmoid.readConfig("pomodorosPerLongBreak");
 		popupNotification 		= plasmoid.readConfig("popupNotification");
 		kdeNotification 		= plasmoid.readConfig("kdeNotification");
@@ -96,6 +98,9 @@ Item {
 		actionStartBreak 		= plasmoid.readConfig("actionStartBreak");
 		actionEndBreak 			= plasmoid.readConfig("actionEndBreak");
 		actionEndCycle 			= plasmoid.readConfig("actionEndCycle");
+		if(Logic.test){
+                        console.log(completeContinuousMode);
+                }
 	}
 
 
@@ -275,8 +280,14 @@ Item {
 				Logic.endBreak()
 				if(kdeNotification)
 					Logic.notify(i18n("Relax time is over"), i18n("Get back to work. Choose a task and start again."));
-				if(continuousMode && completedPomodoros % pomodorosPerLongBreak) //if continuous mode and long break
-					Logic.startTask(timer.taskId, timer.taskName)
+				if(continuousMode){
+                                        if(completedPomodoros % pomodorosPerLongBreak == 0){ //if this is a long break
+                                                if(completeContinuousMode)
+                                                        Logic.startTask(timer.taskId, timer.taskName)
+                                        } else {
+                                                Logic.startTask(timer.taskId, timer.taskName)
+                                        }
+                                }
 			}
 		}
 	}

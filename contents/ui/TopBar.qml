@@ -17,10 +17,10 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-import QtQuick 1.1
-import org.kde.plasma.core 0.1 as PlasmaCore
-import org.kde.plasma.components 0.1 as PlasmaComponents
-import "plasmapackage:/code/logic.js" as Logic
+import QtQuick 2.0
+import org.kde.plasma.core 2.0 as PlasmaCore
+import org.kde.plasma.components 2.0 as PlasmaComponents
+import "../code/logic.js" as Logic
 
 PlasmaComponents.ToolBarLayout {
 	id: topBar
@@ -62,11 +62,11 @@ PlasmaComponents.ToolBarLayout {
 		anchors.left: topBar.left
 		anchors.right: topBar.right
 
-		PlasmaCore.ToolTip {
-			id: estimatedPomosToolTip
-			target: estimatedPomosField
-			subText: i18n("The estimation of pomodoros necessary to complete this task")
-		}
+		//PlasmaCore.ToolTip {
+			//id: estimatedPomosToolTip
+            //target: estimatedPomosField
+            //title: i18n("The estimation of pomodoros necessary to complete this task")
+		//}
 
 		PlasmaComponents.TextField {
 			id: estimatedPomosField
